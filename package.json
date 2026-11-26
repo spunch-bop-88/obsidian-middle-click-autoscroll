@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-middle-click-autoscroll",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "Browser-style middle-click autoscrolling for Obsidian.",
 	"main": "main.js",
 	"scripts": {

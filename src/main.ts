@@ -87,8 +87,12 @@ export default class MiddleClickAutoscrollPlugin extends Plugin {
 
 		const ctx = detectView(target);
 		if (!ctx) return;
-		if (ctx.mode === "editor" && !this.settings.enableLivePreview) return;
-		if (ctx.mode === "reading" && !this.settings.enableReadingView) return;
+		const enabled = {
+			livePreview: this.settings.enableLivePreview,
+			source: this.settings.enableSourceMode,
+			reading: this.settings.enableReadingView,
+		}[ctx.mode];
+		if (!enabled) return;
 		if (this.settings.passThroughLinks && target.closest(`${LINK_SELECTOR}, ${LIVE_PREVIEW_LINK_SELECTOR}`)) return;
 
 		// Inside an enabled note: block the default middle-click (paste on Linux, etc.),

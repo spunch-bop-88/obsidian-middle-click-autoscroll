@@ -33,7 +33,8 @@ Desktop only. You need a mouse with a middle button (or a trackpad tool that sen
 | Sensitivity | 1.0 | How fast speed grows with distance |
 | Dead zone | 12 px | Radius around the start point with no scrolling |
 | Show indicator | On | Draw the indicator at the start point |
-| Live Preview | On | Enable in the editing view |
+| Live Preview | On | Enable in Live Preview |
+| Source mode | On | Enable in Source mode |
 | Reading view | On | Enable in Reading view |
 | Middle-click on links opens them | On | Don't start autoscroll on links |
 

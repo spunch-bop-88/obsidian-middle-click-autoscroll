@@ -10,8 +10,10 @@ export interface AutoscrollSettings {
 	deadZone: number;
 	/** Draw the circular indicator at the start point. */
 	showIndicator: boolean;
-	/** Allow autoscroll in the editing view (Live Preview and Source mode). */
+	/** Allow autoscroll in Live Preview. */
 	enableLivePreview: boolean;
+	/** Allow autoscroll in Source mode. */
+	enableSourceMode: boolean;
 	/** Allow autoscroll in Reading view. */
 	enableReadingView: boolean;
 	/** Middle-clicking a link keeps Obsidian's behaviour (open in new tab) instead of autoscrolling. */
@@ -24,6 +26,7 @@ export const DEFAULT_SETTINGS: AutoscrollSettings = {
 	deadZone: 12,
 	showIndicator: true,
 	enableLivePreview: true,
+	enableSourceMode: true,
 	enableReadingView: true,
 	passThroughLinks: true,
 };
@@ -44,10 +47,14 @@ function clamp(value: unknown, min: number, max: number, fallback: number): numb
 export function sanitizeSettings(raw: unknown): AutoscrollSettings {
 	const data = (raw && typeof raw === "object" ? raw : {}) as Partial<AutoscrollSettings>;
 	const merged: AutoscrollSettings = { ...DEFAULT_SETTINGS, ...data };
+	// Before 1.1.0 the Live Preview toggle also covered Source mode; keep that choice on upgrade.
+	if (data.enableSourceMode === undefined && typeof data.enableLivePreview === "boolean") {
+		merged.enableSourceMode = data.enableLivePreview;
+	}
 	merged.maxSpeed = clamp(merged.maxSpeed, LIMITS.maxSpeed.min, LIMITS.maxSpeed.max, DEFAULT_SETTINGS.maxSpeed);
 	merged.sensitivity = clamp(merged.sensitivity, LIMITS.sensitivity.min, LIMITS.sensitivity.max, DEFAULT_SETTINGS.sensitivity);
 	merged.deadZone = clamp(merged.deadZone, LIMITS.deadZone.min, LIMITS.deadZone.max, DEFAULT_SETTINGS.deadZone);
-	for (const key of ["showIndicator", "enableLivePreview", "enableReadingView", "passThroughLinks"] as const) {
+	for (const key of ["showIndicator", "enableLivePreview", "enableSourceMode", "enableReadingView", "passThroughLinks"] as const) {
 		if (typeof merged[key] !== "boolean") merged[key] = DEFAULT_SETTINGS[key];
 	}
 	return merged;
@@ -126,10 +133,20 @@ export class AutoscrollSettingTab extends PluginSettingTab {
 
 		new Setting(containerEl)
 			.setName("Live Preview")
-			.setDesc("Enable autoscroll in the editing view (Live Preview and Source mode).")
+			.setDesc("Enable autoscroll in Live Preview.")
 			.addToggle((toggle) =>
 				toggle.setValue(this.plugin.settings.enableLivePreview).onChange(async (value) => {
 					this.plugin.settings.enableLivePreview = value;
+					await this.plugin.saveSettings();
+				})
+			);
+
+		new Setting(containerEl)
+			.setName("Source mode")
+			.setDesc("Enable autoscroll in Source mode.")
+			.addToggle((toggle) =>
+				toggle.setValue(this.plugin.settings.enableSourceMode).onChange(async (value) => {
+					this.plugin.settings.enableSourceMode = value;
 					await this.plugin.saveSettings();
 				})
 			);

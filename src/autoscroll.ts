@@ -1,6 +1,6 @@
 import type { AutoscrollSettings } from "./settings";
 
-export type ViewMode = "editor" | "reading";
+export type ViewMode = "livePreview" | "source" | "reading";
 
 export interface ViewContext {
 	mode: ViewMode;
@@ -26,7 +26,7 @@ export function detectView(target: HTMLElement): ViewContext | null {
 	const reading = target.closest<HTMLElement>(".markdown-reading-view");
 	if (reading) return { mode: "reading", root: reading };
 	const source = target.closest<HTMLElement>(".markdown-source-view");
-	if (source) return { mode: "editor", root: source };
+	if (source) return { mode: source.hasClass("is-live-preview") ? "livePreview" : "source", root: source };
 	// Hover popovers and other stand-alone rendered markdown.
 	const preview = target.closest<HTMLElement>(".markdown-preview-view");
 	if (preview) return { mode: "reading", root: preview };
@@ -55,7 +55,7 @@ export function buildScrollChain(target: HTMLElement, ctx: ViewContext): HTMLEle
 	}
 
 	// Make sure the view's main scroller is in the chain even if the click hit something odd.
-	const main = ctx.mode === "editor"
+	const main = ctx.mode !== "reading"
 		? ctx.root.querySelector<HTMLElement>(".cm-scroller")
 		: ctx.root.matches(".markdown-preview-view")
 			? ctx.root
