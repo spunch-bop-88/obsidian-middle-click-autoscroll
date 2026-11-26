@@ -1,0 +1,10 @@
+{
+	"id": "middle-click-autoscroll",
+	"name": "Middle Click Autoscroll",
+	"version": "1.0.2",
+	"minAppVersion": "1.4.0",
+	"description": "Browser-style middle-click autoscrolling in Live Preview and Reading view.",
+	"author": "Spunch Bop",
+	"authorUrl": "https://github.com/spunch-bop-88",
+	"isDesktopOnly": true
+}

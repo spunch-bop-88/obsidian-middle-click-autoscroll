@@ -1,0 +1,26 @@
+{
+	"name": "obsidian-middle-click-autoscroll",
+	"version": "1.0.2",
+	"description": "Browser-style middle-click autoscrolling for Obsidian.",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+		"typecheck": "tsc -noEmit -skipLibCheck"
+	},
+	"keywords": [
+		"obsidian",
+		"obsidian-plugin",
+		"autoscroll",
+		"middle-click"
+	],
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.0.0",
+		"esbuild": "^0.25.0",
+		"obsidian": "latest",
+		"tslib": "^2.6.0",
+		"typescript": "^5.4.0"
+	},
+	"author": "Spunch Bop"
+}

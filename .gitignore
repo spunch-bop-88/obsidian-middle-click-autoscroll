@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+# build output (attached to GitHub releases instead of committed)
+main.js
+*.js.map
+
+# per-vault plugin settings
+data.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

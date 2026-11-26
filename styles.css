@@ -1,0 +1,82 @@
+/* Middle Click Autoscroll */
+
+.mca-indicator {
+	position: fixed;
+	left: var(--mca-x);
+	top: var(--mca-y);
+	z-index: var(--layer-tooltip, 1000);
+	width: 30px;
+	height: 30px;
+	transform: translate(-50%, -50%);
+	border-radius: 50%;
+	border: 1px solid var(--background-modifier-border-hover, rgba(128, 128, 128, 0.5));
+	background-color: var(--background-primary);
+	box-shadow: var(--shadow-s, 0 1px 4px rgba(0, 0, 0, 0.25));
+	opacity: 0.92;
+	pointer-events: none;
+	user-select: none;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: 4px 0;
+	box-sizing: border-box;
+}
+
+.mca-arrow {
+	width: 0;
+	height: 0;
+	border-left: 4px solid transparent;
+	border-right: 4px solid transparent;
+	opacity: 0.55;
+	transition: opacity 80ms ease;
+}
+
+.mca-arrow-up {
+	border-bottom: 5px solid var(--text-normal);
+}
+
+.mca-arrow-down {
+	border-top: 5px solid var(--text-normal);
+}
+
+.mca-dot {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: var(--text-normal);
+	opacity: 0.7;
+}
+
+.mca-indicator.is-up .mca-arrow-up,
+.mca-indicator.is-down .mca-arrow-down {
+	opacity: 1;
+	border-bottom-color: var(--interactive-accent);
+	border-top-color: var(--interactive-accent);
+}
+
+.mca-indicator.is-up .mca-arrow-down,
+.mca-indicator.is-down .mca-arrow-up {
+	opacity: 0.25;
+}
+
+/*
+ * Cursor feedback while autoscrolling, browser-style:
+ * idle = dot with up and down arrows, scrolling = dot with a single arrow in the scroll direction.
+ * Custom SVG cursors are used because the system n-resize/s-resize cursors are double-headed on
+ * Windows and Linux. Hotspot is the centre (12 12); the keyword after the url is the fallback.
+ */
+body.mca-active,
+body.mca-active * {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23fff' stroke-width='1.25' stroke-linejoin='round'%3E%3Cpath d='M12 1.5 6.5 8h11z'/%3E%3Cpath d='M12 22.5 6.5 16h11z'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3C/g%3E%3C/svg%3E") 12 12, all-scroll !important;
+}
+
+body.mca-active.mca-scrolling-up,
+body.mca-active.mca-scrolling-up * {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23fff' stroke-width='1.25' stroke-linejoin='round'%3E%3Cpath d='M12 1.5 6.5 8h11z'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3C/g%3E%3C/svg%3E") 12 12, n-resize !important;
+}
+
+body.mca-active.mca-scrolling-down,
+body.mca-active.mca-scrolling-down * {
+	cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23000' stroke='%23fff' stroke-width='1.25' stroke-linejoin='round'%3E%3Cpath d='M12 22.5 6.5 16h11z'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3C/g%3E%3C/svg%3E") 12 12, s-resize !important;
+}
